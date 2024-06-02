@@ -12,10 +12,16 @@ app.use(express.urlencoded({extended: true}));
 
 
 app.get("/", async (req, res) =>{
-    const response = await axios.get(API_URL + "/random");
-    const result = response.data;
-    console.log(result)
-    res.render("index.ejs", {secret: result.secret, user: result.username});
+    try{
+        const response = await axios.get(API_URL + "/random");
+        const result = response.data;
+        console.log(result)
+        res.render("index.ejs", {secret: result.secret, user: result.username});
+    } catch(error){
+        console.error(error.response.data)
+        res.status(500)
+    }
+    
 })
 
 app.listen(port, () =>{
